@@ -214,7 +214,7 @@ export default function AdminDashboard({ onExitAdmin }) {
                 inputMode="numeric"
                 value={pinInput}
                 onChange={(e) => setPinInput(e.target.value)}
-                placeholder="Masukkan PIN (contoh: 1234)"
+                placeholder="Masukkan PIN Akses Guru BK"
                 className="lkpd-input text-center text-lg tracking-widest font-bold"
                 autoFocus
               />

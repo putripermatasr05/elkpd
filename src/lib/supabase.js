@@ -9,11 +9,16 @@ export const SUPABASE_ANON_KEY =
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const LS_SUBMISSIONS = 'elkpd_local_submissions_v1';
-const DEFAULT_ADMIN_PIN = import.meta.env?.VITE_ADMIN_PIN || '1234';
+const DEFAULT_ADMIN_PIN = import.meta.env?.VITE_ADMIN_PIN || '2405';
 
 export const verifyAdminPin = (pin) => {
   const clean = String(pin || '').trim();
-  return clean === DEFAULT_ADMIN_PIN || clean === '1234' || clean === '9999' || clean === 'bkadmin';
+  const configuredPin = import.meta.env?.VITE_ADMIN_PIN ? String(import.meta.env.VITE_ADMIN_PIN).trim() : null;
+
+  if (configuredPin) {
+    return clean === configuredPin;
+  }
+  return clean === DEFAULT_ADMIN_PIN || clean === 'bkadmin';
 };
 
 /* ─── SQL Setup Script untuk Supabase SQL Editor ─── */
