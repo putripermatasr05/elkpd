@@ -26,20 +26,18 @@ export default function Navbar({
             title="Kembali ke Pilihan LKPD"
             className="flex items-center gap-2.5 sm:gap-3 text-left group"
           >
-            <div
-              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105 shrink-0 ${
-                isEvaluasi
-                  ? 'bg-[#5A3A2A]'
-                  : 'bg-gradient-to-tr from-purple-600 to-indigo-600'
-              }`}
-            >
-              {isEvaluasi ? (
-                <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
-              ) : isKarier ? (
-                <Compass className="w-4 h-4 sm:w-5 sm:h-5" />
-              ) : (
-                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
-              )}
+            {/* 2 Logo: ULM & Audere BK */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              <img
+                src="/lambangULM2021warna.webp"
+                alt="Logo ULM"
+                className="w-8 h-8 sm:w-9 sm:h-9 object-contain group-hover:scale-105 transition-transform drop-shadow-xs"
+              />
+              <img
+                src="/auderebk.png"
+                alt="Logo BK"
+                className="w-8 h-8 sm:w-9 sm:h-9 object-contain rounded-full group-hover:scale-105 transition-transform drop-shadow-xs"
+              />
             </div>
 
             <div className="flex items-center gap-2">

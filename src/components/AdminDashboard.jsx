@@ -180,16 +180,28 @@ export default function AdminDashboard({ onExitAdmin }) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-[#FAF8FF] relative overflow-hidden">
         <div className="w-full max-w-md glass-card p-6 sm:p-8 space-y-6 relative z-10">
-          <div className="text-center space-y-2">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-purple-200">
-              <Lock className="w-7 h-7" />
+          <div className="text-center space-y-3">
+            {/* 2 Logo Institusi */}
+            <div className="flex items-center justify-center gap-3">
+              <img
+                src="/lambangULM2021warna.webp"
+                alt="Logo ULM"
+                className="w-12 h-12 object-contain"
+              />
+              <img
+                src="/auderebk.png"
+                alt="Logo BK"
+                className="w-12 h-12 object-contain rounded-full"
+              />
             </div>
-            <h1 className="font-display font-extrabold text-2xl text-slate-800">
-              Dashboard Guru BK
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Masukkan PIN Admin untuk melihat & mengunduh rekap jawaban E-LKPD siswa.
-            </p>
+            <div>
+              <h1 className="font-display font-extrabold text-2xl text-slate-800">
+                Dashboard Guru BK
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Universitas Lambung Mangkurat • E-LKPD Bimbingan dan Konseling
+              </p>
+            </div>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -243,8 +255,17 @@ export default function AdminDashboard({ onExitAdmin }) {
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-purple-100 shadow-sm no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-purple-200">
-              <Database className="w-5 h-5" />
+            <div className="flex items-center gap-2 shrink-0">
+              <img
+                src="/lambangULM2021warna.webp"
+                alt="Logo ULM"
+                className="w-9 h-9 sm:w-10 sm:h-10 object-contain drop-shadow-xs"
+              />
+              <img
+                src="/auderebk.png"
+                alt="Logo BK"
+                className="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-full drop-shadow-xs"
+              />
             </div>
             <div>
               <h1 className="font-display font-extrabold text-base sm:text-xl text-slate-800 leading-tight">
@@ -255,6 +276,8 @@ export default function AdminDashboard({ onExitAdmin }) {
                   <span className={`w-2 h-2 rounded-full ${tableReady ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                   {tableReady ? 'Terhubung Supabase' : 'Mode Lokal (Belum Setup SQL)'}
                 </span>
+                <span>•</span>
+                <span>BK FKIP ULM</span>
               </div>
             </div>
           </div>

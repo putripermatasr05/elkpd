@@ -379,7 +379,11 @@ export default function App() {
       {/* Discreet Footer (with teacher access and reset) */}
       <footer className="border-t border-purple-100/70 py-6 px-4 bg-white/60 backdrop-blur-sm relative z-10 no-print mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-          <div className="flex items-center gap-2 text-center sm:text-left">
+          <div className="flex items-center gap-2.5 text-center sm:text-left">
+            <div className="flex items-center gap-1.5 shrink-0">
+              <img src="/lambangULM2021warna.webp" alt="Logo ULM" className="w-5 h-5 object-contain" />
+              <img src="/auderebk.png" alt="Logo BK" className="w-5 h-5 object-contain rounded-full" />
+            </div>
             <span>BK FKIP Universitas Lambung Mangkurat</span>
             <span className="hidden sm:inline">•</span>
             <span>TemanBK</span>

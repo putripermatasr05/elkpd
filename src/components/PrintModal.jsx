@@ -53,20 +53,32 @@ export default function PrintModal({
           {isLkpd1 ? (
             /* Document Content for LKPD 1 */
             <div className="space-y-6">
-              {/* Header Institution */}
-              <div className="border-b-2 border-slate-800 pb-4 text-center">
-                <div className="text-xs font-bold tracking-widest text-slate-500 uppercase">
-                  Universitas Lambung Mangkurat • Bimbingan dan Konseling
+              {/* Header Institution Kop Surat with 2 Logos */}
+              <div className="border-b-2 border-slate-800 pb-4 flex items-center justify-between gap-4">
+                <img
+                  src="/lambangULM2021warna.webp"
+                  alt="Logo ULM"
+                  className="w-16 h-16 sm:w-20 sm:h-20 object-contain shrink-0"
+                />
+                <div className="text-center flex-1">
+                  <div className="text-xs font-bold tracking-widest text-slate-500 uppercase">
+                    Universitas Lambung Mangkurat • Bimbingan dan Konseling
+                  </div>
+                  <h1 className="font-display font-black text-xl sm:text-2xl text-slate-900 mt-0.5">
+                    LEMBAR KERJA PESERTA DIDIK (E-LKPD)
+                  </h1>
+                  <h2 className="text-base sm:text-lg font-bold text-purple-700">
+                    “PILIH KARIERKU”
+                  </h2>
+                  <p className="text-xs italic text-slate-600 mt-0.5">
+                    Kenali Minat, Tentukan Pilihan, Rencanakan Masa Depan
+                  </p>
                 </div>
-                <h1 className="font-display font-black text-2xl sm:text-3xl text-slate-900 mt-1">
-                  LEMBAR KERJA PESERTA DIDIK (E-LKPD)
-                </h1>
-                <h2 className="text-lg font-bold text-purple-700">
-                  “PILIH KARIERKU”
-                </h2>
-                <p className="text-xs italic text-slate-600 mt-0.5">
-                  Kenali Minat, Tentukan Pilihan, Rencanakan Masa Depan
-                </p>
+                <img
+                  src="/auderebk.png"
+                  alt="Logo BK"
+                  className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-full shrink-0"
+                />
               </div>
 
               {/* Identitas Table */}
@@ -188,16 +200,29 @@ export default function PrintModal({
           ) : (
             /* Document Content for LKPD 2 */
             <div className="space-y-6">
-              <div className="border-b-2 border-slate-800 pb-4 text-center">
-                <div className="text-xs font-bold tracking-widest text-slate-500 uppercase">
-                  Bimbingan dan Konseling • Refleksi Diri
+              {/* Header Institution Kop Surat with 2 Logos */}
+              <div className="border-b-2 border-slate-800 pb-4 flex items-center justify-between gap-4">
+                <img
+                  src="/lambangULM2021warna.webp"
+                  alt="Logo ULM"
+                  className="w-16 h-16 sm:w-20 sm:h-20 object-contain shrink-0"
+                />
+                <div className="text-center flex-1">
+                  <div className="text-xs font-bold tracking-widest text-slate-500 uppercase">
+                    Universitas Lambung Mangkurat • Bimbingan dan Konseling
+                  </div>
+                  <h1 className="font-display font-black text-xl sm:text-2xl text-slate-900 mt-0.5">
+                    E-LKPD EVALUASI TINDAK LANJUT BK
+                  </h1>
+                  <p className="text-xs italic text-slate-600 mt-0.5">
+                    “Beri dirimu waktu untuk bertumbuh, satu langkah setiap hari.”
+                  </p>
                 </div>
-                <h1 className="font-display font-black text-2xl sm:text-3xl text-slate-900 mt-1">
-                  E-LKPD EVALUASI TINDAK LANJUT BK
-                </h1>
-                <p className="text-xs italic text-slate-600 mt-0.5">
-                  “Beri dirimu waktu untuk bertumbuh, satu langkah setiap hari.”
-                </p>
+                <img
+                  src="/auderebk.png"
+                  alt="Logo BK"
+                  className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-full shrink-0"
+                />
               </div>
 
               {/* Identitas */}

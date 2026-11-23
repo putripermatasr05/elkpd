@@ -14,13 +14,25 @@ export default function CoverSection({ data, onChange, onStart }) {
         <div className="absolute bottom-0 left-0 w-56 h-56 rounded-full bg-indigo-400/20 blur-2xl pointer-events-none" />
 
         <div className="relative z-10">
-          {/* Institution Header Badges */}
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3.5 sm:mb-4">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-white/15 backdrop-blur-md border border-white/20 text-purple-100">
-              <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300 shrink-0" />
-              <span>ULM Banjarmasin</span>
-            </span>
-            <span className="px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-amber-400/20 text-amber-200 border border-amber-300/30">
+          {/* Institution Header Logos & Badges */}
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-4 sm:mb-5">
+            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/20 shadow-sm">
+              <img
+                src="/lambangULM2021warna.webp"
+                alt="Logo ULM"
+                className="w-7 h-7 sm:w-8 sm:h-8 object-contain"
+              />
+              <div className="w-px h-5 bg-white/20" />
+              <img
+                src="/auderebk.png"
+                alt="Logo BK"
+                className="w-7 h-7 sm:w-8 sm:h-8 object-contain rounded-full"
+              />
+              <span className="text-xs sm:text-sm font-bold text-white ml-0.5">
+                ULM Banjarmasin
+              </span>
+            </div>
+            <span className="px-3 py-1.5 rounded-2xl text-[11px] sm:text-xs font-semibold bg-amber-400/20 text-amber-200 border border-amber-300/30">
               E-LKPD Karier
             </span>
           </div>

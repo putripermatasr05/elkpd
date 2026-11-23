@@ -16,6 +16,28 @@ export default function Sidebar({ currentStep, onSelectStep, progressPercent }) 
   return (
     <aside className="w-72 shrink-0 hidden lg:block sticky top-20 self-start max-h-[calc(100vh-6rem)] overflow-y-auto custom-scroll no-print z-30">
       <div className="glass-card p-5 space-y-5">
+        {/* 2 Logo Institusi: ULM & Audere BK */}
+        <div className="flex items-center gap-2.5 pb-3 border-b border-purple-100/80">
+          <img
+            src="/lambangULM2021warna.webp"
+            alt="Logo ULM"
+            className="w-8 h-8 object-contain shrink-0"
+          />
+          <img
+            src="/auderebk.png"
+            alt="Logo BK"
+            className="w-8 h-8 object-contain rounded-full shrink-0"
+          />
+          <div className="text-left overflow-hidden">
+            <div className="text-xs font-bold text-slate-800 truncate">
+              ULM Banjarmasin
+            </div>
+            <div className="text-[10px] text-purple-700 font-semibold truncate">
+              Bimbingan & Konseling
+            </div>
+          </div>
+        </div>
+
         {/* Progress Card */}
         <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-100">
           <div className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1.5">

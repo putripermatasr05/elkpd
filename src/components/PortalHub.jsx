@@ -24,15 +24,29 @@ export default function PortalHub({ onSelectLKPD, onOpenAdmin }) {
         <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-indigo-400/20 blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-2xl">
-          <div className="flex flex-wrap items-center gap-2 mb-4">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/15 backdrop-blur-md border border-white/20 text-purple-100">
-              <Award className="w-3.5 h-3.5 text-amber-300" />
-              <span>Universitas Lambung Mangkurat</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/15 backdrop-blur-md border border-white/20 text-purple-100">
-              <Sparkles className="w-3.5 h-3.5 text-purple-300" />
-              <span>Bimbingan & Konseling</span>
-            </span>
+          {/* 2 Logo Institusi: ULM & Audere BK */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-2.5 bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/20 shadow-md">
+              <img
+                src="/lambangULM2021warna.webp"
+                alt="Logo Universitas Lambung Mangkurat"
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain drop-shadow"
+              />
+              <div className="w-px h-8 bg-white/20" />
+              <img
+                src="/auderebk.png"
+                alt="Logo Bimbingan dan Konseling"
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain rounded-full drop-shadow"
+              />
+            </div>
+            <div className="text-left">
+              <div className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                UNIVERSITAS LAMBUNG MANGKURAT
+              </div>
+              <div className="text-[11px] sm:text-xs text-purple-200 font-medium">
+                Bimbingan & Konseling • E-LKPD Digital
+              </div>
+            </div>
           </div>
 
           <h1 className="font-display font-extrabold text-2xl sm:text-4xl lg:text-5xl tracking-tight text-white mb-3 leading-tight">

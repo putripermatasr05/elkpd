@@ -71,11 +71,28 @@ export default function EvaluationWorksheet({
       {/* Outer Card Styled with Soft Warm Background Matching Canva LKPD 2 */}
       <div className="relative overflow-hidden rounded-3xl bg-white/95 border border-amber-200/60 shadow-[0_10px_40px_rgba(180,120,60,0.08)] p-4 sm:p-10">
         
-        {/* Top Header Labels */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-100/80 pb-3.5 mb-5">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-[#FFF2EE] text-[#A0522D] border border-amber-200/60 tracking-wider">
-            LEMBAR KERJA PESERTA DIDIK
-          </span>
+        {/* Top Header Labels with 2 Logos */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-amber-100/80 pb-4 mb-5">
+          <div className="flex items-center gap-2.5">
+            <img
+              src="/lambangULM2021warna.webp"
+              alt="Logo ULM"
+              className="w-8 h-8 sm:w-9 sm:h-9 object-contain"
+            />
+            <img
+              src="/auderebk.png"
+              alt="Logo BK"
+              className="w-8 h-8 sm:w-9 sm:h-9 object-contain rounded-full"
+            />
+            <div>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold bg-[#FFF2EE] text-[#A0522D] border border-amber-200/60 tracking-wider">
+                LEMBAR KERJA PESERTA DIDIK
+              </span>
+              <div className="text-[11px] text-slate-500 font-medium">
+                Universitas Lambung Mangkurat
+              </div>
+            </div>
+          </div>
           <span className="text-[11px] sm:text-xs font-medium text-slate-500">
             Bimbingan dan Konseling · Refleksi diri
           </span>
