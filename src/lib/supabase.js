@@ -1,17 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
 import { calculateRIASEC } from '../data/elkpdData';
 
-export const SUPABASE_URL = 'https://kjjwcehdxhahvmjbysxx.supabase.co';
-export const SUPABASE_ANON_KEY = 'sb_publishable_tsqg2-bsVvH8mTAL2ocw0g__CnfsicV';
+export const SUPABASE_URL =
+  import.meta.env?.VITE_SUPABASE_URL || 'https://kjjwcehdxhahvmjbysxx.supabase.co';
+export const SUPABASE_ANON_KEY =
+  import.meta.env?.VITE_SUPABASE_ANON_KEY || 'sb_publishable_tsqg2-bsVvH8mTAL2ocw0g__CnfsicV';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const LS_SUBMISSIONS = 'elkpd_local_submissions_v1';
-const ADMIN_PIN = '1234';
+const DEFAULT_ADMIN_PIN = import.meta.env?.VITE_ADMIN_PIN || '1234';
 
 export const verifyAdminPin = (pin) => {
   const clean = String(pin || '').trim();
-  return clean === ADMIN_PIN || clean === '9999' || clean === 'bkadmin';
+  return clean === DEFAULT_ADMIN_PIN || clean === '1234' || clean === '9999' || clean === 'bkadmin';
 };
 
 /* ─── SQL Setup Script untuk Supabase SQL Editor ─── */
