@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import Sidebar, { STEPS } from './components/Sidebar';
 import BottomNav from './components/BottomNav';
@@ -12,6 +12,7 @@ import Activity6ReflectCommit from './components/Activity6ReflectCommit';
 import Activity7FollowUp from './components/Activity7FollowUp';
 import EvaluationWorksheet from './components/EvaluationWorksheet';
 import AdminDashboard from './components/AdminDashboard';
+import PortalHub from './components/PortalHub';
 import PrintModal from './components/PrintModal';
 import ResetModal from './components/ResetModal';
 import {
@@ -27,22 +28,48 @@ import {
 } from './data/elkpdData';
 import { Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const checkIsAdminRoute = () => {
+/**
+ * Robust Route Resolver:
+ * Supports pathnames (/karier, /evaluasi, /hub, /admin),
+ * query params (?page=karier, ?page=evaluasi, ?page=hub, ?admin=true),
+ * and hash fragments (#karier, #evaluasi, #hub, #admin).
+ */
+const resolveRoute = () => {
   const params = new URLSearchParams(window.location.search);
-  const path = window.location.pathname.toLowerCase();
-  return params.get('admin') === 'true' || path === '/admin' || path === '/admin/';
+  const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
+  const hash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
+
+  if (params.get('admin') === 'true' || path === '/admin' || hash === 'admin') {
+    return { page: 'admin', step: 'cover' };
+  }
+  if (
+    params.get('page') === 'evaluasi' ||
+    params.get('tab') === 'lkpd2' ||
+    path === '/evaluasi' ||
+    hash === 'evaluasi'
+  ) {
+    return { page: 'evaluasi', step: 'cover' };
+  }
+  if (
+    params.get('page') === 'hub' ||
+    params.get('page') === 'beranda' ||
+    path === '/hub' ||
+    path === '/beranda' ||
+    hash === 'hub'
+  ) {
+    return { page: 'hub', step: 'cover' };
+  }
+
+  // Default to 'karier' (E-LKPD 1)
+  const step = params.get('step') || 'cover';
+  return { page: 'karier', step };
 };
 
 export default function App() {
-  const [isAdminView, setIsAdminView] = useState(() => checkIsAdminRoute());
-  const [activeTab, setActiveTab] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('tab') === 'lkpd2' ? 'lkpd2' : 'lkpd1';
-  });
-  const [currentStep, setCurrentStep] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('step') || 'cover';
-  });
+  const initial = resolveRoute();
+  const [currentPage, setCurrentPage] = useState(initial.page);
+  const [currentStep, setCurrentStep] = useState(initial.step);
+
   const [lkpd1Data, setLkpd1Data] = useState(() => loadLKPD1());
   const [lkpd2Data, setLkpd2Data] = useState(() => loadLKPD2());
 
@@ -50,31 +77,50 @@ export default function App() {
   const [isResetOpen, setIsResetOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
-  // Sync popstate (back/forward browser navigation)
+  // Sync with browser back/forward buttons
   useEffect(() => {
-    const onPopState = () => setIsAdminView(checkIsAdminRoute());
+    const onPopState = () => {
+      const r = resolveRoute();
+      setCurrentPage(r.page);
+      if (r.step) setCurrentStep(r.step);
+    };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-  // Auto-save LKPD 1 on changes
+  // Auto-save LKPD 1
   useEffect(() => {
     saveLKPD1(lkpd1Data);
   }, [lkpd1Data]);
 
-  // Auto-save LKPD 2 on changes
+  // Auto-save LKPD 2
   useEffect(() => {
     saveLKPD2(lkpd2Data);
   }, [lkpd2Data]);
 
-  const exitAdminView = () => {
-    setIsAdminView(false);
-    window.history.pushState({}, '', '/');
-  };
+  // Navigate helper with clean URL update
+  const navigateTo = useCallback((page, step = null) => {
+    let url = '/';
+    if (page === 'karier') {
+      url = step ? `/?page=karier&step=${step}` : '/?page=karier';
+    } else if (page === 'evaluasi') {
+      url = '/?page=evaluasi';
+    } else if (page === 'hub') {
+      url = '/?page=hub';
+    } else if (page === 'admin') {
+      url = '/?admin=true';
+    }
 
-  if (isAdminView) {
-    return <AdminDashboard onExitAdmin={exitAdminView} />;
-  }
+    try {
+      window.history.pushState({}, '', url);
+    } catch (e) {
+      console.warn('History navigation failed:', e);
+    }
+
+    setCurrentPage(page);
+    if (step) setCurrentStep(step);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -115,7 +161,7 @@ export default function App() {
 
   // Copy TXT handler
   const handleCopyTxt = async () => {
-    const text = activeTab === 'lkpd1' ? generateLKPD1Txt(lkpd1Data) : generateLKPD2Txt(lkpd2Data);
+    const text = currentPage === 'evaluasi' ? generateLKPD2Txt(lkpd2Data) : generateLKPD1Txt(lkpd1Data);
     try {
       await navigator.clipboard.writeText(text);
       showToast('Ringkasan teks berhasil disalin ke clipboard!');
@@ -126,11 +172,11 @@ export default function App() {
 
   // Download TXT file handler
   const handleDownloadTxt = () => {
-    const isLkpd1 = activeTab === 'lkpd1';
-    const text = isLkpd1 ? generateLKPD1Txt(lkpd1Data) : generateLKPD2Txt(lkpd2Data);
-    const filename = isLkpd1
-      ? `E-LKPD_Pilih_Karierku_${lkpd1Data.nama ? lkpd1Data.nama.replace(/\s+/g, '_') : 'Siswa'}.txt`
-      : `E-LKPD_Evaluasi_BK_${lkpd2Data.nama ? lkpd2Data.nama.replace(/\s+/g, '_') : 'Siswa'}.txt`;
+    const isEvaluasi = currentPage === 'evaluasi';
+    const text = isEvaluasi ? generateLKPD2Txt(lkpd2Data) : generateLKPD1Txt(lkpd1Data);
+    const filename = isEvaluasi
+      ? `E-LKPD_Evaluasi_BK_${lkpd2Data.nama ? lkpd2Data.nama.replace(/\s+/g, '_') : 'Siswa'}.txt`
+      : `E-LKPD_Pilih_Karierku_${lkpd1Data.nama ? lkpd1Data.nama.replace(/\s+/g, '_') : 'Siswa'}.txt`;
 
     const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -146,20 +192,26 @@ export default function App() {
 
   // Reset handler
   const handleConfirmReset = () => {
-    if (activeTab === 'lkpd1') {
+    if (currentPage === 'evaluasi') {
+      setLkpd2Data(INITIAL_LKPD2_DATA);
+      showToast('Lembar Evaluasi Tindak Lanjut berhasil dikosongkan.');
+    } else {
       setLkpd1Data(INITIAL_LKPD1_DATA);
       setCurrentStep('cover');
-    } else {
-      setLkpd2Data(INITIAL_LKPD2_DATA);
+      showToast('Lembar Pilih Karierku berhasil dikosongkan.');
     }
     clearAllLKPD();
-    showToast('Seluruh lembar kerja berhasil dikosongkan.');
   };
 
   // Step index helpers for LKPD 1
   const stepIdx = STEPS.findIndex((s) => s.id === currentStep);
   const prevStep = stepIdx > 0 ? STEPS[stepIdx - 1] : null;
   const nextStep = stepIdx < STEPS.length - 1 ? STEPS[stepIdx + 1] : null;
+
+  // View: Admin Dashboard
+  if (currentPage === 'admin') {
+    return <AdminDashboard onExitAdmin={() => navigateTo('hub')} />;
+  }
 
   return (
     <div className="min-h-screen relative flex flex-col font-sans">
@@ -171,26 +223,38 @@ export default function App() {
         <div className="absolute -bottom-10 right-4 sm:right-10 w-60 h-60 sm:w-80 sm:h-80 bg-rose-200/25 rounded-full blur-3xl" />
       </div>
 
-      {/* Top Navbar */}
+      {/* Top Navbar with Dynamic Page Context */}
       <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        lastSaved={activeTab === 'lkpd1' ? lkpd1Data.lastSaved : lkpd2Data.lastSaved}
+        currentPage={currentPage}
+        onNavigate={(p) => navigateTo(p)}
+        lastSaved={currentPage === 'evaluasi' ? lkpd2Data.lastSaved : lkpd1Data.lastSaved}
         onOpenPrint={() => setIsPrintOpen(true)}
         onCopyTxt={handleCopyTxt}
         onOpenReset={() => setIsResetOpen(true)}
+        onOpenAdmin={() => navigateTo('admin')}
       />
 
-      {/* Main Container */}
+      {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 relative z-10">
-        {activeTab === 'lkpd1' ? (
-          /* LKPD 1: PILIH KARIERKU */
+        {/* PAGE 1: PORTAL / PILIHAN HUB */}
+        {currentPage === 'hub' && (
+          <PortalHub
+            onSelectLKPD={(p) => navigateTo(p)}
+            onOpenAdmin={() => navigateTo('admin')}
+          />
+        )}
+
+        {/* PAGE 2: E-LKPD PILIH KARIERKU */}
+        {currentPage === 'karier' && (
           <div className="flex gap-8 items-start">
-            {/* Desktop Left Sidebar */}
+            {/* Desktop Left Sidebar Stepper */}
             <Sidebar
               currentStep={currentStep}
               onSelectStep={(stepId) => {
                 setCurrentStep(stepId);
+                try {
+                  window.history.pushState({}, '', `/?page=karier&step=${stepId}`);
+                } catch (e) {}
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               progressPercent={progressPercent}
@@ -204,6 +268,9 @@ export default function App() {
                   onChange={handleUpdateLKPD1}
                   onStart={() => {
                     setCurrentStep('act1');
+                    try {
+                      window.history.pushState({}, '', '/?page=karier&step=act1');
+                    } catch (e) {}
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                 />
@@ -252,10 +319,16 @@ export default function App() {
                   onDownloadTxt={handleDownloadTxt}
                   onGoToCover={() => {
                     setCurrentStep('cover');
+                    try {
+                      window.history.pushState({}, '', '/?page=karier&step=cover');
+                    } catch (e) {}
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   onGoToFollowUp={() => {
                     setCurrentStep('act7');
+                    try {
+                      window.history.pushState({}, '', '/?page=karier&step=act7');
+                    } catch (e) {}
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                 />
@@ -263,10 +336,7 @@ export default function App() {
 
               {currentStep === 'act7' && (
                 <Activity7FollowUp
-                  onSwitchToLKPD2={() => {
-                    setActiveTab('lkpd2');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                  onSwitchToLKPD2={() => navigateTo('evaluasi')}
                 />
               )}
 
@@ -276,6 +346,9 @@ export default function App() {
                   onClick={() => {
                     if (prevStep) {
                       setCurrentStep(prevStep.id);
+                      try {
+                        window.history.pushState({}, '', `/?page=karier&step=${prevStep.id}`);
+                      } catch (e) {}
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                   }}
@@ -298,6 +371,9 @@ export default function App() {
                   onClick={() => {
                     if (nextStep) {
                       setCurrentStep(nextStep.id);
+                      try {
+                        window.history.pushState({}, '', `/?page=karier&step=${nextStep.id}`);
+                      } catch (e) {}
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                   }}
@@ -319,18 +395,24 @@ export default function App() {
               currentStep={currentStep}
               onSelectStep={(stepId) => {
                 setCurrentStep(stepId);
+                try {
+                  window.history.pushState({}, '', `/?page=karier&step=${stepId}`);
+                } catch (e) {}
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               progressPercent={progressPercent}
             />
           </div>
-        ) : (
-          /* LKPD 2: EVALUASI TINDAK LANJUT BK */
+        )}
+
+        {/* PAGE 3: E-LKPD EVALUASI TINDAK LANJUT BK */}
+        {currentPage === 'evaluasi' && (
           <div className="pb-12 lg:pb-8">
             <EvaluationWorksheet
               data={lkpd2Data}
               onChange={handleUpdateLKPD2}
               onOpenPrint={() => setIsPrintOpen(true)}
+              onNavigate={(p) => navigateTo(p)}
             />
           </div>
         )}
@@ -348,7 +430,7 @@ export default function App() {
       <PrintModal
         isOpen={isPrintOpen}
         onClose={() => setIsPrintOpen(false)}
-        activeTab={activeTab}
+        activeTab={currentPage === 'evaluasi' ? 'lkpd2' : 'lkpd1'}
         lkpd1Data={lkpd1Data}
         lkpd2Data={lkpd2Data}
       />

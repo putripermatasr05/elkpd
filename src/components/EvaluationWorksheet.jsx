@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Copy, CheckCircle, Calendar, User, GraduationCap, Printer, AlertCircle, Loader2, Send } from 'lucide-react';
+import { Save, Copy, CheckCircle, Calendar, User, GraduationCap, Printer, AlertCircle, Loader2, Send, ArrowLeft, Compass, Grid } from 'lucide-react';
 import { generateLKPD2Txt } from '../data/elkpdData';
 import { submitLKPDResponse } from '../lib/supabase';
 import confetti from 'canvas-confetti';
@@ -8,6 +8,7 @@ export default function EvaluationWorksheet({
   data,
   onChange,
   onOpenPrint,
+  onNavigate,
 }) {
   const [copied, setCopied] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -59,6 +60,28 @@ export default function EvaluationWorksheet({
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      {/* Top Quick Navigation Breadcrumb */}
+      {onNavigate && (
+        <div className="flex items-center justify-between gap-2 px-1 text-xs">
+          <button
+            onClick={() => onNavigate('karier')}
+            className="inline-flex items-center gap-1.5 font-bold text-purple-700 hover:text-purple-800 bg-white/80 hover:bg-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-purple-200/80 shadow-xs transition-all active:scale-95 text-[11px] sm:text-xs"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 shrink-0" />
+            <span className="hidden sm:inline">Kembali ke E-LKPD Pilih Karierku</span>
+            <span className="sm:hidden">Ke E-LKPD Karier</span>
+          </button>
+
+          <button
+            onClick={() => onNavigate('hub')}
+            className="inline-flex items-center gap-1.5 font-semibold text-slate-600 hover:text-slate-800 bg-white/80 hover:bg-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 shadow-xs transition-all text-[11px] sm:text-xs"
+          >
+            <Grid className="w-3.5 h-3.5 shrink-0" />
+            <span>Pilihan LKPD</span>
+          </button>
+        </div>
+      )}
+
       {/* Outer Card Styled with Soft Warm Background Matching Canva LKPD 2 */}
       <div className="relative overflow-hidden rounded-3xl bg-white/95 border border-amber-200/60 shadow-[0_10px_40px_rgba(180,120,60,0.08)] p-4 sm:p-10">
         
