@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { calculateRIASEC } from '../data/elkpdData';
+import { calculateRIASEC } from '../data/elkpdData.js';
 
 export const SUPABASE_URL =
   import.meta.env?.VITE_SUPABASE_URL || 'https://kjjwcehdxhahvmjbysxx.supabase.co';
