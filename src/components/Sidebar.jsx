@@ -14,7 +14,7 @@ export const STEPS = [
 
 export default function Sidebar({ currentStep, onSelectStep, progressPercent }) {
   return (
-    <aside className="w-72 shrink-0 hidden lg:block sticky top-24 h-[calc(100vh-7rem)] overflow-y-auto custom-scroll no-print">
+    <aside className="w-72 shrink-0 hidden lg:block sticky top-20 self-start max-h-[calc(100vh-6rem)] overflow-y-auto custom-scroll no-print z-30">
       <div className="glass-card p-5 space-y-5">
         {/* Progress Card */}
         <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-100">
