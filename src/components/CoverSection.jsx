@@ -20,10 +20,6 @@ export default function CoverSection({ data, onChange, onStart }) {
               <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300 shrink-0" />
               <span>ULM Banjarmasin</span>
             </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-white/15 backdrop-blur-md border border-white/20 text-purple-100">
-              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-300 shrink-0" />
-              <span>Audere BK</span>
-            </span>
             <span className="px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-amber-400/20 text-amber-200 border border-amber-300/30">
               E-LKPD Karier
             </span>

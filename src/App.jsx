@@ -382,7 +382,7 @@ export default function App() {
           <div className="flex items-center gap-2 text-center sm:text-left">
             <span>BK FKIP Universitas Lambung Mangkurat</span>
             <span className="hidden sm:inline">•</span>
-            <span>Audere BK</span>
+            <span>TemanBK</span>
           </div>
 
           <div className="flex items-center gap-4">

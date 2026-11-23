@@ -31,7 +31,7 @@ export default function PortalHub({ onSelectLKPD, onOpenAdmin }) {
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/15 backdrop-blur-md border border-white/20 text-purple-100">
               <Sparkles className="w-3.5 h-3.5 text-purple-300" />
-              <span>Audere BK</span>
+              <span>Bimbingan & Konseling</span>
             </span>
           </div>
 

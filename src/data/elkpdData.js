@@ -295,7 +295,7 @@ export const generateLKPD1Txt = (data) => {
   return `${divider}
 E-LKPD LAYANAN BIMBINGAN DAN KONSELING BIDANG KARIER
 LEMBAR KERJA PESERTA DIDIK: "PILIH KARIERKU"
-Universitas Lambung Mangkurat & Audere BK
+Universitas Lambung Mangkurat • TemanBK
 ${divider}
 
 [IDENTITAS SISWA]

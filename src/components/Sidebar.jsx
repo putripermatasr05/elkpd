@@ -81,7 +81,7 @@ export default function Sidebar({ currentStep, onSelectStep, progressPercent }) 
         <div className="pt-3 border-t border-purple-100 text-[11px] text-slate-400 text-center leading-snug">
           BK FKIP Universitas Lambung Mangkurat
           <br />
-          © {new Date().getFullYear()} Audere BK
+          © {new Date().getFullYear()} TemanBK
         </div>
       </div>
     </aside>
