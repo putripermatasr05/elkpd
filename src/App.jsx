@@ -26,7 +26,7 @@ import {
   generateLKPD1Txt,
   generateLKPD2Txt,
 } from './data/elkpdData';
-import { Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Sparkles, ChevronLeft, ChevronRight, Lock, RotateCcw } from 'lucide-react';
 
 /**
  * Robust Route Resolver:
@@ -227,11 +227,7 @@ export default function App() {
       <Navbar
         currentPage={currentPage}
         onNavigate={(p) => navigateTo(p)}
-        lastSaved={currentPage === 'evaluasi' ? lkpd2Data.lastSaved : lkpd1Data.lastSaved}
         onOpenPrint={() => setIsPrintOpen(true)}
-        onCopyTxt={handleCopyTxt}
-        onOpenReset={() => setIsResetOpen(true)}
-        onOpenAdmin={() => navigateTo('admin')}
       />
 
       {/* Main Content Area */}
@@ -417,6 +413,39 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* Discreet Footer (with teacher access and reset) */}
+      <footer className="border-t border-purple-100/70 py-6 px-4 bg-white/60 backdrop-blur-sm relative z-10 no-print mt-auto">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+          <div className="flex items-center gap-2 text-center sm:text-left">
+            <span>BK FKIP Universitas Lambung Mangkurat</span>
+            <span className="hidden sm:inline">•</span>
+            <span>Audere BK</span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {currentPage !== 'hub' && (
+              <button
+                onClick={() => setIsResetOpen(true)}
+                className="text-slate-400 hover:text-rose-600 transition-colors flex items-center gap-1 text-[11px]"
+                title="Kosongkan lembar kerja"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Kosongkan Isian</span>
+              </button>
+            )}
+
+            <button
+              onClick={() => navigateTo('admin')}
+              className="text-slate-400 hover:text-purple-700 transition-colors flex items-center gap-1 text-[11px]"
+              title="Akses khusus Guru Bimbingan dan Konseling"
+            >
+              <Lock className="w-3 h-3 text-amber-500" />
+              <span>Akses Guru BK</span>
+            </button>
+          </div>
+        </div>
+      </footer>
 
       {/* Toast Notification */}
       {toastMessage && (
