@@ -86,7 +86,7 @@ export default function PortalHub({ onSelectLKPD, onOpenAdmin }) {
               </div>
               <div className="flex items-center gap-2 text-xs text-slate-700">
                 <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0" />
-                <span>Ekspor TXT, Cetak PDF & Auto-save Supabase</span>
+                <span>Tersimpan Otomatis & Terkirim ke Guru BK</span>
               </div>
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function PortalHub({ onSelectLKPD, onOpenAdmin }) {
               </div>
               <div className="flex items-center gap-2 text-xs text-slate-700">
                 <CheckCircle2 className="w-4 h-4 text-amber-700 shrink-0" />
-                <span>Pengiriman Langsung ke Guru BK & Cetak PDF</span>
+                <span>Pengiriman Langsung ke Database Guru BK</span>
               </div>
             </div>
           </div>

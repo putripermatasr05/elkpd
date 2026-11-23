@@ -13,7 +13,6 @@ import Activity7FollowUp from './components/Activity7FollowUp';
 import EvaluationWorksheet from './components/EvaluationWorksheet';
 import AdminDashboard from './components/AdminDashboard';
 import PortalHub from './components/PortalHub';
-import PrintModal from './components/PrintModal';
 import ResetModal from './components/ResetModal';
 import {
   loadLKPD1,
@@ -23,8 +22,6 @@ import {
   clearAllLKPD,
   INITIAL_LKPD1_DATA,
   INITIAL_LKPD2_DATA,
-  generateLKPD1Txt,
-  generateLKPD2Txt,
 } from './data/elkpdData';
 import { Sparkles, ChevronLeft, ChevronRight, Lock, RotateCcw } from 'lucide-react';
 
@@ -73,7 +70,6 @@ export default function App() {
   const [lkpd1Data, setLkpd1Data] = useState(() => loadLKPD1());
   const [lkpd2Data, setLkpd2Data] = useState(() => loadLKPD2());
 
-  const [isPrintOpen, setIsPrintOpen] = useState(false);
   const [isResetOpen, setIsResetOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -158,37 +154,6 @@ export default function App() {
   };
 
   const progressPercent = calculateProgress();
-
-  // Copy TXT handler
-  const handleCopyTxt = async () => {
-    const text = currentPage === 'evaluasi' ? generateLKPD2Txt(lkpd2Data) : generateLKPD1Txt(lkpd1Data);
-    try {
-      await navigator.clipboard.writeText(text);
-      showToast('Ringkasan teks berhasil disalin ke clipboard!');
-    } catch (err) {
-      showToast('Gagal menyalin teks. Silakan gunakan tombol Cetak.');
-    }
-  };
-
-  // Download TXT file handler
-  const handleDownloadTxt = () => {
-    const isEvaluasi = currentPage === 'evaluasi';
-    const text = isEvaluasi ? generateLKPD2Txt(lkpd2Data) : generateLKPD1Txt(lkpd1Data);
-    const filename = isEvaluasi
-      ? `E-LKPD_Evaluasi_BK_${lkpd2Data.nama ? lkpd2Data.nama.replace(/\s+/g, '_') : 'Siswa'}.txt`
-      : `E-LKPD_Pilih_Karierku_${lkpd1Data.nama ? lkpd1Data.nama.replace(/\s+/g, '_') : 'Siswa'}.txt`;
-
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    showToast('Berkas TXT berhasil diunduh!');
-  };
 
   // Reset handler
   const handleConfirmReset = () => {
@@ -311,8 +276,6 @@ export default function App() {
                 <Activity6ReflectCommit
                   data={lkpd1Data}
                   onChange={handleUpdateLKPD1}
-                  onOpenPrint={() => setIsPrintOpen(true)}
-                  onDownloadTxt={handleDownloadTxt}
                   onGoToCover={() => {
                     setCurrentStep('cover');
                     try {
@@ -407,7 +370,6 @@ export default function App() {
             <EvaluationWorksheet
               data={lkpd2Data}
               onChange={handleUpdateLKPD2}
-              onOpenPrint={() => setIsPrintOpen(true)}
               onNavigate={(p) => navigateTo(p)}
             />
           </div>
@@ -455,15 +417,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Modals */}
-      <PrintModal
-        isOpen={isPrintOpen}
-        onClose={() => setIsPrintOpen(false)}
-        activeTab={currentPage === 'evaluasi' ? 'lkpd2' : 'lkpd1'}
-        lkpd1Data={lkpd1Data}
-        lkpd2Data={lkpd2Data}
-      />
-
+      {/* Reset Confirmation Modal */}
       <ResetModal
         isOpen={isResetOpen}
         onClose={() => setIsResetOpen(false)}

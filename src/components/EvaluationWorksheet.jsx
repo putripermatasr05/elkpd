@@ -1,29 +1,15 @@
 import React, { useState } from 'react';
-import { Save, Copy, CheckCircle, Calendar, User, GraduationCap, Printer, AlertCircle, Loader2, Send, ArrowLeft, Compass, Grid } from 'lucide-react';
-import { generateLKPD2Txt } from '../data/elkpdData';
+import { Save, CheckCircle, Calendar, User, GraduationCap, AlertCircle, Loader2, Send, ArrowLeft, Grid } from 'lucide-react';
 import { submitLKPDResponse } from '../lib/supabase';
 import confetti from 'canvas-confetti';
 
 export default function EvaluationWorksheet({
   data,
   onChange,
-  onOpenPrint,
   onNavigate,
 }) {
-  const [copied, setCopied] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [statusBanner, setStatusBanner] = useState(null); // { type: 'success' | 'error', message: string }
-
-  const handleCopyTxt = async () => {
-    const text = generateLKPD2Txt(data);
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 3000);
-    } catch (err) {
-      console.error('Failed to copy: ', err);
-    }
-  };
 
   const handleManualSaveAndSubmit = async () => {
     setSubmitting(true);
@@ -312,34 +298,16 @@ export default function EvaluationWorksheet({
           Jawaban tersimpan otomatis di browser perangkat ini. Tekan tombol <strong>Kirim & Simpan Jawaban</strong> di bawah agar Guru BK dapat menerima hasil evaluasimu.
         </div>
 
-        {/* Action Buttons (Mobile responsive full width -> Desktop inline) */}
-        <div className="mt-5 grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-2.5 sm:gap-3">
+        {/* Action Button: Kirim & Simpan Jawaban */}
+        <div className="mt-5">
           <button
             onClick={handleManualSaveAndSubmit}
             disabled={submitting}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#5A3A2A] hover:bg-[#462c1f] disabled:opacity-60 text-white font-bold transition-all shadow-md text-xs sm:text-sm active:scale-95"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-[#5A3A2A] hover:bg-[#462c1f] disabled:opacity-60 text-white font-bold transition-all shadow-md text-sm active:scale-95"
           >
             {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             <span>{submitting ? 'Mengirim...' : 'Kirim & Simpan Jawaban'}</span>
           </button>
-
-          <div className="grid grid-cols-2 sm:flex gap-2">
-            <button
-              onClick={handleCopyTxt}
-              className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl bg-white hover:bg-amber-50 text-[#5A3A2A] font-bold transition-all border border-amber-300/80 text-xs sm:text-sm"
-            >
-              <Copy className="w-4 h-4 shrink-0" />
-              <span>{copied ? 'Disalin! ✓' : 'Salin TXT'}</span>
-            </button>
-
-            <button
-              onClick={onOpenPrint}
-              className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-semibold transition-all border border-slate-200 text-xs sm:text-sm"
-            >
-              <Printer className="w-4 h-4 shrink-0" />
-              <span>Cetak / PDF</span>
-            </button>
-          </div>
         </div>
 
         {/* Quote Footer */}

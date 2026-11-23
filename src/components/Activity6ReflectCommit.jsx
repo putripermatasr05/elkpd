@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { Lightbulb, Award, CheckCircle, Download, Send, Sparkles, Printer, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
+import { Lightbulb, Award, CheckCircle, Send, Sparkles, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { submitLKPDResponse } from '../lib/supabase';
 
 export default function Activity6ReflectCommit({
   data,
   onChange,
-  onOpenPrint,
-  onDownloadTxt,
   onGoToFollowUp,
   onGoToCover,
 }) {
@@ -162,42 +160,22 @@ export default function Activity6ReflectCommit({
           </div>
         )}
 
-        {/* Action Buttons (Mobile-friendly full width stacked -> Desktop row) */}
+        {/* Action Buttons: Kirim & Follow Up */}
         <div className="pt-4 border-t border-purple-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-2.5">
-            <button
-              onClick={handleCelebrateSubmit}
-              disabled={submitting}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-purple-600 hover:bg-purple-700 disabled:opacity-60 text-white font-bold transition-all shadow-md shadow-purple-200 text-sm active:scale-95"
-            >
-              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-              <span>{submitting ? 'Mengirim...' : 'Kirim Jawaban ke Guru BK'}</span>
-            </button>
-
-            <div className="grid grid-cols-2 sm:flex gap-2">
-              <button
-                onClick={onDownloadTxt}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold transition-all border border-purple-200 text-xs sm:text-sm"
-              >
-                <Download className="w-4 h-4 shrink-0" />
-                <span>Unduh TXT</span>
-              </button>
-
-              <button
-                onClick={onOpenPrint}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-semibold transition-all border border-slate-200 text-xs sm:text-sm"
-              >
-                <Printer className="w-4 h-4 shrink-0" />
-                <span>Cetak / PDF</span>
-              </button>
-            </div>
-          </div>
+          <button
+            onClick={handleCelebrateSubmit}
+            disabled={submitting}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-purple-600 hover:bg-purple-700 disabled:opacity-60 text-white font-bold transition-all shadow-md shadow-purple-200 text-sm active:scale-95"
+          >
+            {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+            <span>{submitting ? 'Mengirim...' : 'Kirim Jawaban ke Guru BK'}</span>
+          </button>
 
           <button
             onClick={onGoToFollowUp}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all shadow-md shadow-emerald-200 text-sm active:scale-95"
           >
-            <span>Aktivitas 7: Follow Up</span>
+            <span>Lanjut ke Aktivitas 7: Follow Up</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

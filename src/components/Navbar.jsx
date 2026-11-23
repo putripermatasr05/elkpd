@@ -3,7 +3,6 @@ import {
   Compass,
   Heart,
   CheckCircle2,
-  Printer,
   Grid,
   BookOpen,
 } from 'lucide-react';
@@ -11,7 +10,6 @@ import {
 export default function Navbar({
   currentPage,
   onNavigate,
-  onOpenPrint,
 }) {
   const isKarier = currentPage === 'karier';
   const isEvaluasi = currentPage === 'evaluasi';
@@ -75,7 +73,7 @@ export default function Navbar({
             </div>
           </button>
 
-          {/* Area Kanan: Hanya yang Esensial untuk Siswa/Publik */}
+          {/* Area Kanan: Ringkas & Bersih */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Indikator Auto-save (Memberikan ketenangan bagi siswa saat mengisi) */}
             {!isHub && (
@@ -85,31 +83,15 @@ export default function Navbar({
               </div>
             )}
 
-            {/* Tombol Cetak / PDF */}
-            {!isHub && (
-              <button
-                onClick={onOpenPrint}
-                title="Cetak atau simpan lembar kerja ke PDF"
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold text-white transition-all shadow-xs active:scale-95 ${
-                  isEvaluasi
-                    ? 'bg-[#5A3A2A] hover:bg-[#462c1f]'
-                    : 'bg-purple-600 hover:bg-purple-700'
-                }`}
-              >
-                <Printer className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-                <span>Cetak / PDF</span>
-              </button>
-            )}
-
             {/* Tombol Kembali ke Hub/Pilihan LKPD (Bila sedang di dalam LKPD) */}
             {!isHub && (
               <button
                 onClick={() => onNavigate('hub')}
                 title="Pilihan Lembar Kerja Lainnya"
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-purple-700 hover:bg-purple-50 transition-all border border-slate-200/80"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-purple-700 hover:bg-purple-50 transition-all border border-slate-200/80"
               >
                 <Grid className="w-3.5 h-3.5 text-slate-500" />
-                <span className="hidden md:inline">Semua LKPD</span>
+                <span>Pilihan LKPD</span>
               </button>
             )}
           </div>
