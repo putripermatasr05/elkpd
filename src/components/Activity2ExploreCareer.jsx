@@ -17,17 +17,17 @@ export default function Activity2ExploreCareer({ data, onChange }) {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Title Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg shadow-blue-600/15">
+      <div className="p-5 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg shadow-blue-600/15">
         <div className="flex items-center gap-2 text-blue-200 text-xs font-bold uppercase tracking-wider mb-1">
           <Search className="w-4 h-4 text-amber-300" />
           <span>Aktivitas 2</span>
         </div>
-        <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-white">
+        <h2 className="font-display font-extrabold text-xl sm:text-3xl text-white leading-tight">
           EXPLORE YOUR CAREER! — Menjelajahi Pilihan Karier
         </h2>
-        <p className="text-blue-100 text-sm sm:text-base mt-2 max-w-2xl">
+        <p className="text-blue-100 text-xs sm:text-base mt-2 max-w-2xl leading-relaxed">
           Setelah mengetahui tipe kepribadian Holland Code-mu ({riasec.hollandCode}), saatnya menjelajahi berbagai profesi yang selaras dengan minatmu dan memilih 3 bidang yang paling memikat hati.
         </p>
       </div>

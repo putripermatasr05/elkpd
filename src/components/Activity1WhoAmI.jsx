@@ -23,23 +23,23 @@ export default function Activity1WhoAmI({ data, onChange }) {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Activity Title Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-purple-600 via-indigo-600 to-violet-600 text-white shadow-lg shadow-purple-600/15">
+      <div className="p-5 sm:p-8 rounded-3xl bg-gradient-to-r from-purple-600 via-indigo-600 to-violet-600 text-white shadow-lg shadow-purple-600/15">
         <div className="flex items-center gap-2 text-purple-200 text-xs font-bold uppercase tracking-wider mb-1">
           <Sparkles className="w-4 h-4 text-amber-300" />
           <span>Aktivitas 1</span>
         </div>
-        <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-white">
+        <h2 className="font-display font-extrabold text-xl sm:text-3xl text-white leading-tight">
           WHO AM I? — Mengenal Diri & Minat Karier
         </h2>
-        <p className="text-purple-100 text-sm sm:text-base mt-2 max-w-2xl">
+        <p className="text-purple-100 text-xs sm:text-base mt-2 max-w-2xl leading-relaxed">
           Langkah pertama menuju masa depan yang sukses adalah mengenal siapa dirimu sesungguhnya, apa yang kamu sukai, kelebihanmu, serta kecenderungan tipe minatmu.
         </p>
       </div>
 
       {/* Bagian A: Kegiatan yang Saya Sukai */}
-      <div className="glass-card p-6 sm:p-8">
+      <div className="glass-card p-5 sm:p-8">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm">
             A

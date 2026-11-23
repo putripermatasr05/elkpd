@@ -11,6 +11,7 @@ import Activity5ActionPlan from './components/Activity5ActionPlan';
 import Activity6ReflectCommit from './components/Activity6ReflectCommit';
 import Activity7FollowUp from './components/Activity7FollowUp';
 import EvaluationWorksheet from './components/EvaluationWorksheet';
+import AdminDashboard from './components/AdminDashboard';
 import PrintModal from './components/PrintModal';
 import ResetModal from './components/ResetModal';
 import {
@@ -24,9 +25,16 @@ import {
   generateLKPD1Txt,
   generateLKPD2Txt,
 } from './data/elkpdData';
-import { Sparkles, Check, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const checkIsAdminRoute = () => {
+  const params = new URLSearchParams(window.location.search);
+  const path = window.location.pathname.toLowerCase();
+  return params.get('admin') === 'true' || path === '/admin' || path === '/admin/';
+};
 
 export default function App() {
+  const [isAdminView, setIsAdminView] = useState(() => checkIsAdminRoute());
   const [activeTab, setActiveTab] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('tab') === 'lkpd2' ? 'lkpd2' : 'lkpd1';
@@ -42,6 +50,13 @@ export default function App() {
   const [isResetOpen, setIsResetOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
+  // Sync popstate (back/forward browser navigation)
+  useEffect(() => {
+    const onPopState = () => setIsAdminView(checkIsAdminRoute());
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
   // Auto-save LKPD 1 on changes
   useEffect(() => {
     saveLKPD1(lkpd1Data);
@@ -51,6 +66,15 @@ export default function App() {
   useEffect(() => {
     saveLKPD2(lkpd2Data);
   }, [lkpd2Data]);
+
+  const exitAdminView = () => {
+    setIsAdminView(false);
+    window.history.pushState({}, '', '/');
+  };
+
+  if (isAdminView) {
+    return <AdminDashboard onExitAdmin={exitAdminView} />;
+  }
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -94,7 +118,7 @@ export default function App() {
     const text = activeTab === 'lkpd1' ? generateLKPD1Txt(lkpd1Data) : generateLKPD2Txt(lkpd2Data);
     try {
       await navigator.clipboard.writeText(text);
-      showToast('Ringkasan teks berhasil disalin ke clipboard! 📋');
+      showToast('Ringkasan teks berhasil disalin ke clipboard!');
     } catch (err) {
       showToast('Gagal menyalin teks. Silakan gunakan tombol Cetak.');
     }
@@ -117,7 +141,7 @@ export default function App() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    showToast('Berkas TXT berhasil diunduh! ⬇️');
+    showToast('Berkas TXT berhasil diunduh!');
   };
 
   // Reset handler
@@ -158,7 +182,7 @@ export default function App() {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 relative z-10">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 relative z-10">
         {activeTab === 'lkpd1' ? (
           /* LKPD 1: PILIH KARIERKU */
           <div className="flex gap-8 items-start">
@@ -173,7 +197,7 @@ export default function App() {
             />
 
             {/* Dynamic Step Content */}
-            <div className="flex-1 min-w-0 pb-20 lg:pb-8">
+            <div className="flex-1 min-w-0 pb-28 lg:pb-8">
               {currentStep === 'cover' && (
                 <CoverSection
                   data={lkpd1Data}
@@ -226,6 +250,10 @@ export default function App() {
                   onChange={handleUpdateLKPD1}
                   onOpenPrint={() => setIsPrintOpen(true)}
                   onDownloadTxt={handleDownloadTxt}
+                  onGoToCover={() => {
+                    setCurrentStep('cover');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
                   onGoToFollowUp={() => {
                     setCurrentStep('act7');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -298,7 +326,7 @@ export default function App() {
           </div>
         ) : (
           /* LKPD 2: EVALUASI TINDAK LANJUT BK */
-          <div className="pb-16 lg:pb-8">
+          <div className="pb-12 lg:pb-8">
             <EvaluationWorksheet
               data={lkpd2Data}
               onChange={handleUpdateLKPD2}
@@ -310,8 +338,8 @@ export default function App() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-20 lg:bottom-8 right-4 sm:right-8 z-50 p-4 rounded-2xl bg-slate-900 text-white text-xs sm:text-sm font-medium shadow-2xl flex items-center gap-2.5 animate-fadeIn border border-slate-700">
-          <Sparkles className="w-4 h-4 text-amber-400" />
+        <div className="fixed bottom-24 lg:bottom-8 right-4 sm:right-8 z-50 px-4 py-3 rounded-2xl bg-slate-900 text-white text-xs sm:text-sm font-medium shadow-2xl flex items-center gap-2.5 border border-slate-700">
+          <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}

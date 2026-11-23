@@ -3,17 +3,17 @@ import { RefreshCw, ArrowRight, Heart, MessageSquare, CheckCircle2, Award, Exter
 
 export default function Activity7FollowUp({ onSwitchToLKPD2 }) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Title Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-700 text-white shadow-lg shadow-teal-600/15">
+      <div className="p-5 sm:p-8 rounded-3xl bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-700 text-white shadow-lg shadow-teal-600/15">
         <div className="flex items-center gap-2 text-teal-200 text-xs font-bold uppercase tracking-wider mb-1">
           <RefreshCw className="w-4 h-4 text-amber-300" />
           <span>Aktivitas 7</span>
         </div>
-        <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-white">
+        <h2 className="font-display font-extrabold text-xl sm:text-3xl text-white leading-tight">
           FOLLOW UP — Tindak Lanjut & Evaluasi Perkembangan
         </h2>
-        <p className="text-teal-100 text-sm sm:text-base mt-2 max-w-2xl">
+        <p className="text-teal-100 text-xs sm:text-base mt-2 max-w-2xl leading-relaxed">
           Perjalanan merencanakan karier tidak berhenti di sini. Evaluasi secara berkala perkembangan rencana aksimu dan diskusikan kembali dengan Guru Bimbingan dan Konseling.
         </p>
       </div>

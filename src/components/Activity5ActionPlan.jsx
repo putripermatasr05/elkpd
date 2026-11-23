@@ -12,17 +12,17 @@ export default function Activity5ActionPlan({ data, onChange }) {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Title Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 text-white shadow-lg shadow-orange-600/15">
+      <div className="p-5 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 text-white shadow-lg shadow-orange-600/15">
         <div className="flex items-center gap-2 text-amber-200 text-xs font-bold uppercase tracking-wider mb-1">
           <MapPin className="w-4 h-4 text-amber-300" />
           <span>Aktivitas 5</span>
         </div>
-        <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-white">
+        <h2 className="font-display font-extrabold text-xl sm:text-3xl text-white leading-tight">
           MY FUTURE ACTION PLAN — Rencana Aksi Masa Depan
         </h2>
-        <p className="text-amber-100 text-sm sm:text-base mt-2 max-w-2xl">
+        <p className="text-amber-100 text-xs sm:text-base mt-2 max-w-2xl leading-relaxed">
           Cita-cita tanpa rencana hanyalah angan-angan. Rancang langkah nyata jangka pendek, menengah, dan panjang secara bertahap agar tujuan kariermu terwujud dengan pasti.
         </p>
       </div>

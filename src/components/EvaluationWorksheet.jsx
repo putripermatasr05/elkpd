@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Save, Copy, CheckCircle, Calendar, User, GraduationCap, Heart, Printer, Sparkles, Check } from 'lucide-react';
+import { Save, Copy, CheckCircle, Calendar, User, GraduationCap, Printer, AlertCircle, Loader2, Send } from 'lucide-react';
 import { generateLKPD2Txt } from '../data/elkpdData';
+import { submitLKPDResponse } from '../lib/supabase';
 import confetti from 'canvas-confetti';
 
 export default function EvaluationWorksheet({
@@ -9,7 +10,8 @@ export default function EvaluationWorksheet({
   onOpenPrint,
 }) {
   const [copied, setCopied] = useState(false);
-  const [savedToast, setSavedToast] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [statusBanner, setStatusBanner] = useState(null); // { type: 'success' | 'error', message: string }
 
   const handleCopyTxt = async () => {
     const text = generateLKPD2Txt(data);
@@ -22,17 +24,34 @@ export default function EvaluationWorksheet({
     }
   };
 
-  const handleManualSave = () => {
-    onChange('isCompleted', true);
-    setSavedToast(true);
-    setTimeout(() => setSavedToast(false), 3500);
+  const handleManualSaveAndSubmit = async () => {
+    setSubmitting(true);
+    setStatusBanner(null);
     try {
-      confetti({
-        particleCount: 70,
-        spread: 60,
-        origin: { y: 0.7 },
+      const res = await submitLKPDResponse('lkpd2', data);
+      onChange('isCompleted', true);
+      setStatusBanner({
+        type: 'success',
+        message:
+          res.source === 'supabase'
+            ? 'Jawaban evaluasi berhasil dikirim ke Database Guru BK & tersimpan di perangkatmu!'
+            : 'Jawaban evaluasi berhasil disimpan di perangkatmu! (Mode cadangan lokal aktif).',
       });
-    } catch (e) {}
+      try {
+        confetti({
+          particleCount: 70,
+          spread: 60,
+          origin: { y: 0.7 },
+        });
+      } catch (e) {}
+    } catch (err) {
+      setStatusBanner({
+        type: 'error',
+        message: err.message || 'Mohon lengkapi Nama Lengkap dan Kelas terlebih dahulu.',
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const q1Options = ['Sudah sepenuhnya', 'Sudah sebagian', 'Belum terlaksana'];
@@ -41,35 +60,35 @@ export default function EvaluationWorksheet({
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Outer Card Styled with Soft Warm Background Matching Canva LKPD 2 */}
-      <div className="relative overflow-hidden rounded-3xl bg-white/95 border border-amber-200/60 shadow-[0_10px_40px_rgba(180,120,60,0.08)] p-6 sm:p-10">
+      <div className="relative overflow-hidden rounded-3xl bg-white/95 border border-amber-200/60 shadow-[0_10px_40px_rgba(180,120,60,0.08)] p-4 sm:p-10">
         
         {/* Top Header Labels */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-100/80 pb-4 mb-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FFF2EE] text-[#A0522D] border border-amber-200/60 tracking-wider">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-100/80 pb-3.5 mb-5">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-[#FFF2EE] text-[#A0522D] border border-amber-200/60 tracking-wider">
             LEMBAR KERJA PESERTA DIDIK
           </span>
-          <span className="text-xs font-medium text-slate-500">
+          <span className="text-[11px] sm:text-xs font-medium text-slate-500">
             Bimbingan dan Konseling · Refleksi diri
           </span>
         </div>
 
         {/* Header Hero Title */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#FFF5F0] via-[#FEF8F2] to-[#FFF0E8] border border-amber-200/50 mb-8">
-          <span className="text-xs font-black tracking-widest text-amber-800 uppercase block mb-1">
+        <div className="p-5 sm:p-8 rounded-2xl bg-gradient-to-r from-[#FFF5F0] via-[#FEF8F2] to-[#FFF0E8] border border-amber-200/50 mb-6 sm:mb-8">
+          <span className="text-[11px] sm:text-xs font-black tracking-widest text-amber-800 uppercase block mb-1">
             E-LKPD • EVALUASI
           </span>
-          <h1 className="font-display font-extrabold text-2xl sm:text-4xl text-[#5A3A2A] tracking-tight mb-2">
+          <h1 className="font-display font-extrabold text-2xl sm:text-4xl text-[#5A3A2A] tracking-tight mb-2 leading-tight">
             Evaluasi Tindak Lanjut BK
           </h1>
-          <p className="text-sm sm:text-base text-[#764E1F] font-medium italic leading-relaxed">
+          <p className="text-xs sm:text-base text-[#764E1F] font-medium italic leading-relaxed">
             Isi lembar ini dengan jujur untuk melihat perkembanganmu setelah mengikuti tindak lanjut layanan BK. Tidak ada jawaban yang salah.
           </p>
         </div>
 
         {/* 01. Identitas Siswa */}
-        <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-white/80 border border-amber-100 shadow-sm space-y-4">
+        <div className="mb-6 sm:mb-8 p-4 sm:p-6 rounded-2xl bg-white/80 border border-amber-100 shadow-sm space-y-4">
           <div className="flex items-center gap-2.5 border-b border-amber-100/70 pb-3">
-            <span className="w-7 h-7 rounded-full bg-[#EADCCF] text-[#5A3A2A] font-bold text-xs flex items-center justify-center">
+            <span className="w-7 h-7 rounded-full bg-[#EADCCF] text-[#5A3A2A] font-bold text-xs flex items-center justify-center shrink-0">
               01
             </span>
             <h2 className="font-display font-bold text-base sm:text-lg text-[#5A3A2A]">
@@ -77,7 +96,7 @@ export default function EvaluationWorksheet({
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5 text-amber-700" />
@@ -122,9 +141,9 @@ export default function EvaluationWorksheet({
         </div>
 
         {/* 02. Refleksi Tindak Lanjut */}
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6">
           <div className="flex items-center gap-2.5 border-b border-amber-100/70 pb-3">
-            <span className="w-7 h-7 rounded-full bg-[#EADCCF] text-[#5A3A2A] font-bold text-xs flex items-center justify-center">
+            <span className="w-7 h-7 rounded-full bg-[#EADCCF] text-[#5A3A2A] font-bold text-xs flex items-center justify-center shrink-0">
               02
             </span>
             <div>
@@ -138,11 +157,11 @@ export default function EvaluationWorksheet({
           </div>
 
           {/* Pertanyaan 1 */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white/70 border border-amber-100/80 space-y-2.5">
-            <label className="block text-xs sm:text-sm font-semibold text-[#5A3A2A]">
+          <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/30 border border-amber-100/80 space-y-3">
+            <label className="block text-xs sm:text-sm font-semibold text-[#5A3A2A] leading-snug">
               1. Sejauh mana rencana tindak lanjutmu sudah dilaksanakan?
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {q1Options.map((opt) => {
                 const isSelected = data.questionOne === opt;
                 return (
@@ -150,7 +169,7 @@ export default function EvaluationWorksheet({
                     type="button"
                     key={opt}
                     onClick={() => onChange('questionOne', opt)}
-                    className={`px-4 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 border text-center ${
+                    className={`px-4 py-3.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all flex items-center sm:justify-center gap-2.5 border text-left sm:text-center active:scale-[0.98] ${
                       isSelected
                         ? 'bg-[#5A3A2A] text-white border-[#5A3A2A] shadow-md'
                         : 'bg-white hover:bg-amber-50/50 text-[#5A3A2A] border-amber-200/70'
@@ -171,11 +190,11 @@ export default function EvaluationWorksheet({
           </div>
 
           {/* Pertanyaan 2 */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white/70 border border-amber-100/80 space-y-2.5">
-            <label className="block text-xs sm:text-sm font-semibold text-[#5A3A2A]">
+          <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/30 border border-amber-100/80 space-y-3">
+            <label className="block text-xs sm:text-sm font-semibold text-[#5A3A2A] leading-snug">
               2. Apakah tindak lanjut tersebut membantumu?
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {q2Options.map((opt) => {
                 const isSelected = data.questionTwo === opt;
                 return (
@@ -183,7 +202,7 @@ export default function EvaluationWorksheet({
                     type="button"
                     key={opt}
                     onClick={() => onChange('questionTwo', opt)}
-                    className={`px-4 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 border text-center ${
+                    className={`px-4 py-3.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all flex items-center sm:justify-center gap-2.5 border text-left sm:text-center active:scale-[0.98] ${
                       isSelected
                         ? 'bg-[#5A3A2A] text-white border-[#5A3A2A] shadow-md'
                         : 'bg-white hover:bg-amber-50/50 text-[#5A3A2A] border-amber-200/70'
@@ -246,50 +265,62 @@ export default function EvaluationWorksheet({
           </div>
         </div>
 
-        {/* Toast Notifikasi Tersimpan */}
-        {savedToast && (
-          <div className="mt-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 flex items-center gap-2.5 animate-fadeIn">
-            <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
-            <span className="text-xs sm:text-sm font-medium">
-              Jawaban berhasil disimpan di browser perangkatmu! ✨
+        {/* Status Banner */}
+        {statusBanner && statusBanner.type === 'success' && (
+          <div className="mt-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 flex items-start gap-2.5">
+            <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+            <span className="text-xs sm:text-sm font-medium leading-relaxed">
+              {statusBanner.message}
             </span>
           </div>
         )}
 
-        {/* Privacy Note matching Canva text */}
+        {statusBanner && statusBanner.type === 'error' && (
+          <div className="mt-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 flex items-start gap-2.5">
+            <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+            <span className="text-xs sm:text-sm font-medium leading-relaxed">
+              {statusBanner.message}
+            </span>
+          </div>
+        )}
+
+        {/* Privacy Note */}
         <div className="mt-6 p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/50 text-[11px] sm:text-xs text-[#5A3A2A] leading-relaxed">
-          Jawaban tersimpan otomatis di browser perangkat ini. Untuk membuat berkas TXT, salin jawaban lalu tempel ke editor teks dan simpan dengan nama yang ditampilkan.
+          Jawaban tersimpan otomatis di browser perangkat ini. Tekan tombol <strong>Kirim & Simpan Jawaban</strong> di bawah agar Guru BK dapat menerima hasil evaluasimu.
         </div>
 
-        {/* Action Buttons matching Canva */}
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        {/* Action Buttons (Mobile responsive full width -> Desktop inline) */}
+        <div className="mt-5 grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-2.5 sm:gap-3">
           <button
-            onClick={handleManualSave}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#5A3A2A] hover:bg-[#462c1f] text-white font-bold transition-all shadow-md text-xs sm:text-sm hover:scale-[1.02] active:scale-95"
+            onClick={handleManualSaveAndSubmit}
+            disabled={submitting}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#5A3A2A] hover:bg-[#462c1f] disabled:opacity-60 text-white font-bold transition-all shadow-md text-xs sm:text-sm active:scale-95"
           >
-            <Save className="w-4 h-4" />
-            <span>Simpan jawaban</span>
+            {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+            <span>{submitting ? 'Mengirim...' : 'Kirim & Simpan Jawaban'}</span>
           </button>
 
-          <button
-            onClick={handleCopyTxt}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white hover:bg-amber-50 text-[#5A3A2A] font-bold transition-all border border-amber-300/80 text-xs sm:text-sm"
-          >
-            <Copy className="w-4 h-4" />
-            <span>{copied ? 'Berhasil Disalin! ✓' : 'Salin jawaban TXT'}</span>
-          </button>
+          <div className="grid grid-cols-2 sm:flex gap-2">
+            <button
+              onClick={handleCopyTxt}
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl bg-white hover:bg-amber-50 text-[#5A3A2A] font-bold transition-all border border-amber-300/80 text-xs sm:text-sm"
+            >
+              <Copy className="w-4 h-4 shrink-0" />
+              <span>{copied ? 'Disalin! ✓' : 'Salin TXT'}</span>
+            </button>
 
-          <button
-            onClick={onOpenPrint}
-            className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-semibold transition-all border border-slate-200 text-xs sm:text-sm"
-          >
-            <Printer className="w-4 h-4" />
-            <span>Cetak / PDF</span>
-          </button>
+            <button
+              onClick={onOpenPrint}
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-semibold transition-all border border-slate-200 text-xs sm:text-sm"
+            >
+              <Printer className="w-4 h-4 shrink-0" />
+              <span>Cetak / PDF</span>
+            </button>
+          </div>
         </div>
 
-        {/* Quote Footer matching Canva */}
-        <div className="mt-8 pt-6 border-t border-amber-100 text-center text-xs sm:text-sm text-[#764E1F] italic font-medium">
+        {/* Quote Footer */}
+        <div className="mt-8 pt-5 border-t border-amber-100 text-center text-xs sm:text-sm text-[#764E1F] italic font-medium">
           “Beri dirimu waktu untuk bertumbuh, satu langkah setiap hari.”
         </div>
       </div>

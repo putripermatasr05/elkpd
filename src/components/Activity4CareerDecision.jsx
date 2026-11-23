@@ -12,17 +12,17 @@ export default function Activity4CareerDecision({ data, onChange }) {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Title Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-purple-700 via-pink-600 to-rose-600 text-white shadow-lg shadow-purple-700/15">
+      <div className="p-5 sm:p-8 rounded-3xl bg-gradient-to-r from-purple-700 via-pink-600 to-rose-600 text-white shadow-lg shadow-purple-700/15">
         <div className="flex items-center gap-2 text-pink-200 text-xs font-bold uppercase tracking-wider mb-1">
           <Target className="w-4 h-4 text-amber-300" />
           <span>Aktivitas 4</span>
         </div>
-        <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-white">
+        <h2 className="font-display font-extrabold text-xl sm:text-3xl text-white leading-tight">
           MY CAREER DECISION — Mengambil Keputusan Karier
         </h2>
-        <p className="text-pink-100 text-sm sm:text-base mt-2 max-w-2xl">
+        <p className="text-pink-100 text-xs sm:text-base mt-2 max-w-2xl leading-relaxed">
           Pengambilan keputusan yang matang selalu memiliki prioritas utama (Plan A) dan skenario cadangan strategis (Plan B) agar kamu tetap tangguh menghadapi berbagai dinamika.
         </p>
       </div>
